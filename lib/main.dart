@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:new_app/pages/login.dart';
 import 'package:new_app/pages/register.dart';
+import 'package:new_app/screens/onboarding/body_boarding.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
       ),
-      home: const Register(),
+      home: const BodyBoarding(),
     );
   }
 }
