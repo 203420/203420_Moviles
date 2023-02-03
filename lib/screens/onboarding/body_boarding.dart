@@ -13,7 +13,7 @@ class BodyBoarding extends StatefulWidget {
 class _BodyBoardingState extends State<BodyBoarding> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Onboarding(),
     );
   }

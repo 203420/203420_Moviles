@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:new_app/pages/login.dart';
 
 class Register extends StatelessWidget {
   const Register({super.key});
@@ -11,7 +12,7 @@ class Register extends StatelessWidget {
           child: Center(
         child: Padding(
           padding:
-              const EdgeInsets.only(top: 75, left: 20, right: 20, bottom: 25),
+              const EdgeInsets.only(top: 40, left: 20, right: 20, bottom: 25),
           child: LayoutBuilder(builder:
               (BuildContext context, BoxConstraints viewportConstrains) {
             return SingleChildScrollView(
@@ -21,21 +22,19 @@ class Register extends StatelessWidget {
                 child: Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(bottom: 35),
-                      child: SizedBox(
-                        width: 115,
-                        height: 115,
-                        child: ClipOval(
-                          child: (Image.asset(
-                            "assets/images/image2.jpg",
-                          )),
-                        ),
+                      padding: const EdgeInsets.only(bottom: 25),
+                       child: SizedBox(
+                        width: 180,
+                        child: (Image.asset(
+                          "assets/images/logo.png",
+                          height: 180,
+                        )),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 20),
                       child: TextFormField(
-                        autofocus: true,
+                      
                         decoration: const InputDecoration(
                           labelText: "Username",
                           icon: Icon(Icons.person),
@@ -141,27 +140,43 @@ class Register extends StatelessWidget {
                       children: [
                         ElevatedButton(
                           onPressed: () => {},
-                          style: const ButtonStyle(
-                            backgroundColor: MaterialStatePropertyAll(
-                                Color.fromARGB(255, 78, 38, 187)),
-                            padding: MaterialStatePropertyAll(EdgeInsets.only(
-                                top: 10, bottom: 10, left: 40, right: 40)),
+                          style: ButtonStyle(
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  side: const BorderSide(color: Color.fromARGB(255, 70, 42, 146))),
+                            ),
+                            backgroundColor: const MaterialStatePropertyAll(
+                                Color.fromARGB(255, 70, 42, 146)),
+                            padding: const MaterialStatePropertyAll(
+                                EdgeInsets.only(
+                                    top: 15, bottom: 15, left: 80, right: 80)),
                           ),
                           child: const Text(
                             'Register',
                             style: TextStyle(fontSize: 20),
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 12),
-                          child: Text(
-                            "Login",
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500,
-                                color: Color.fromARGB(255, 95, 95, 95)),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 12, bottom: 15),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const Login()));
+                            },
+                            child: const Text(
+                              "Login",
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color.fromARGB(255, 95, 95, 95)),
+                                  
+                            ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ],
