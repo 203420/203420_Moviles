@@ -1,18 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:new_app/pages/passw_recvover1.dart';
-import 'package:new_app/pages/register.dart';
+import 'package:new_app/pages/passwo_recover2.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
-
-  @override
-  State<Login> createState() => _LoginState();
-}
-
-class _LoginState extends State<Login> {
-  bool obsText = true;
+class PasswR1 extends StatelessWidget {
+  const PasswR1({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -44,14 +36,13 @@ class _LoginState extends State<Login> {
                                     Navigator.pop(context);
                                   },
                                   icon: const Icon(Icons.arrow_back),
-                                  color:
-                                      const Color.fromARGB(255, 216, 67, 99),
+                                  color: const Color.fromARGB(255, 216, 67, 99),
                                   iconSize: 35,
                                 ),
                                 const Text(
-                                  "Iniciar sesión",
+                                  "Recuperar contraseña",
                                   style: TextStyle(
-                                      fontSize: 22, color: Colors.white),
+                                      fontSize: 20.5, color: Colors.white),
                                 )
                               ],
                             ),
@@ -72,16 +63,15 @@ class _LoginState extends State<Login> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         const Padding(
-                          padding: EdgeInsets.only(bottom: 60),
+                          padding: EdgeInsets.only(bottom: 40),
                           child: Text(
-                            "Ingresa tus datos",
+                            "Ingresa tu email para recuperar la contraseña",
                             style: TextStyle(
                                 fontSize: 17,
                                 fontWeight: FontWeight.w700,
                                 color: Color.fromARGB(255, 99, 99, 99)),
                           ),
                         ),
-                        
                         Padding(
                           padding: const EdgeInsets.only(bottom: 25),
                           child: Column(
@@ -109,53 +99,25 @@ class _LoginState extends State<Login> {
                             ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 15),
-                          child: Column(
-                            children: [
-                              Container(
-                                  alignment: Alignment.centerLeft,
-                                  child: const Padding(
-                                    padding: EdgeInsets.only(bottom: 6),
-                                    child: Text("Contraseña",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w800,
-                                            color: Colors.black)),
-                                  )),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                  hintText: "Contraseña",
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(14),
-                                  ),
-                                  suffixIcon: IconButton(
-                                    icon: Icon(obsText
-                                        ? Icons.visibility
-                                        : Icons.visibility_off),
-                                    onPressed: () {
-                                      setState(() {
-                                        obsText = !obsText;
-                                      });
-                                    },
-                                  ),
-                                ),
-                                style: const TextStyle(
-                                    fontSize: 17, fontWeight: FontWeight.w500),
-                                obscureText: obsText,
-                              ),
-                            ],
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: const Padding(
+                            padding: EdgeInsets.only(left: 20, bottom: 25),
+                            child: Text(
+                              "Ingrese su correo electrónico registrado y le enviaremos un correo electrónico que contiene un enlace para restablecer su contraseña.",
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color.fromARGB(255, 122, 122, 122)),
+                            ),
                           ),
                         ),
-                        
-                        
                         Padding(
-                          padding: const EdgeInsets.only(top: 50),
+                          padding: const EdgeInsets.only(top: 370),
                           child: SizedBox(
                             width: double.infinity,
                             height: 60,
                             child: OutlinedButton(
-                              onPressed: () => {},
+                              onPressed: () => {Navigator.push(context, MaterialPageRoute(builder: (context) => const PasswR2()))},
                               style: OutlinedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(28)),
@@ -166,52 +128,10 @@ class _LoginState extends State<Login> {
                                       color:
                                           Color.fromRGBO(117, 167, 86, 1.000))),
                               child: const Text(
-                                "Crear cuenta",
+                                "Enviar solicitud",
                                 style: TextStyle(
                                     fontSize: 19, color: Colors.white),
                               ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 20),
-                          child: InkWell(
-                            onTap: () => {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => const Register()))
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Text(
-                                  "¿No tienes una cuenta? ",
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w500,
-                                      color: Color.fromARGB(255, 73, 73, 73)),
-                                ),
-                                Text(
-                                  "Registrate",
-                                  style: TextStyle(
-                                      fontSize: 16.5,
-                                      fontWeight: FontWeight.w800,
-                                      color: Color.fromARGB(255, 216, 67, 99)),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 15),
-                          child: InkWell(
-                            onTap: () => {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => const PasswR1()))
-                            },
-                            child: const Text(
-                              "¿Olvidaste tu contraseña? ",
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color.fromARGB(255, 73, 73, 73)),
                             ),
                           ),
                         ),

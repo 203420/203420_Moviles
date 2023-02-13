@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:new_app/pages/login.dart';
+import 'package:new_app/pages/first.dart';
+
 import 'package:new_app/screens/onboarding/components/content_boarding.dart';
 import 'package:new_app/screens/onboarding/components/content_page.dart';
 
@@ -93,7 +93,7 @@ class _OnboardingState extends State<Onboarding> {
                 child: OutlinedButton(
                   onPressed: () {
                     if (currentPage == boardingData.length-1){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const Login()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const FirstPage()));
                     }  
                     pageCtrl.nextPage(duration: kThemeAnimationDuration, curve: Curves.ease);
                   },
