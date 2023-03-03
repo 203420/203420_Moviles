@@ -29,7 +29,7 @@ class _RegisterState extends State<Register> {
 
   void postData(BuildContext context) async {
     try {
-        var url = Uri.http('192.168.100.12:8000', 'auth/register');
+        var url = Uri.http('192.168.137.223:8000', 'auth/register');
         var response = await http.post(url, body: {'nombre': nameController.text, 'email': emailController.text, 'password': passwdController.text});
         if (kDebugMode) {
           print('Response status: ${response.statusCode}');

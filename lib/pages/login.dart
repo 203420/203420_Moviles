@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/src/foundation/constants.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:new_app/api/user_class.dart';
 import 'package:new_app/pages/passw_recvover1.dart';
 import 'package:new_app/pages/register.dart';
 import 'package:new_app/pages/user_data.dart';
@@ -16,12 +17,7 @@ class Login extends StatefulWidget {
   State<Login> createState() => _LoginState();
 }
 
-class User {
-    String displayName;
-    String email;
 
-    User(this.displayName, this.email);
-  }
 
 class _LoginState extends State<Login> {
   bool obsText = true;
@@ -32,7 +28,7 @@ class _LoginState extends State<Login> {
 
   void login(BuildContext context) async {
     try {
-        var url = Uri.http('192.168.100.12:8000', 'auth/login');
+        var url = Uri.http('192.168.137.223:8000', 'auth/login');
         var response = await http.post(url, body: {'email': eController.text, 'password': pController.text});
         if (kDebugMode) {
           print('Response status: ${response.statusCode}');
@@ -40,7 +36,7 @@ class _LoginState extends State<Login> {
         
         if (response.statusCode == 200) {
           final data = jsonDecode(response.body);
-          User user = User(data['nombre'], data['email']);
+          User user = User(data['nombre'], data['email'], data['token'], 'local');
 
           // ignore: use_build_context_synchronously
           Navigator.push(context, MaterialPageRoute(builder: (context) =>  UserData(user: user)));

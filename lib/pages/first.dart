@@ -1,28 +1,63 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http; 
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:new_app/api/facebook_signin_api.dart';
 import 'package:new_app/api/google_signin_api.dart';
+import 'package:new_app/api/user_class.dart';
 import 'package:new_app/pages/login.dart';
 import 'package:new_app/pages/passw_recvover1.dart';
 import 'package:new_app/pages/register.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:new_app/pages/user_data.dart';
 
+
+
+
 class FirstPage extends StatelessWidget {
   const FirstPage({super.key});
-
 
   Future <void> signIn(BuildContext context) async {
     final user = await GoogleSignInApi.login();
     if (user != null) {
-      print(user);
-      final GoogleSignInAuthentication googleAuth = await user.authentication;
-      print(googleAuth.idToken);
-      print(googleAuth.accessToken);
+      try {
+        final GoogleSignInAuthentication googleAuth = await user.authentication;
+        var url = Uri.http('192.168.137.223:8000', 'auth/social');
+        var response = await http.post(url, body: {'nombre': user.displayName, 'email': user.email});
+        print(response.statusCode);
+        if (response.statusCode == 200){
+          final data = jsonDecode(response.body);
+          User user = User(data['nombre'], data['email'], data['token'], 'GOOGLE');
+          // ignore: use_build_context_synchronously
+          Navigator.push(context, MaterialPageRoute(builder: (context) =>  UserData(user: user)));
+        }
+      }catch (e){
+        print(e);
+      }
+     
+    }
+  }
+
+  Future <void> signInFB(BuildContext context) async {
+    final user = await FacebookSignInApi.loginFb();
+    if (user != null) {
+      try {
+        var url = Uri.http('192.168.137.223:8000', 'auth/social');
+        var response = await http.post(url, body: {'nombre': user['name'], 'email': user['email']});
+        print(response.statusCode);
+        if (response.statusCode == 200){
+          final data = jsonDecode(response.body);
+          User user = User(data['nombre'], data['email'], data['token'], 'FB');
+          // ignore: use_build_context_synchronously
+          Navigator.push(context, MaterialPageRoute(builder: (context) =>  UserData(user: user)));
+        }
+      }catch (e){
+        print(e);
+      }
       
-      // ignore: use_build_context_synchronously
-      Navigator.push(context, MaterialPageRoute(builder: (context) =>  UserData(user: user)));
     }
   }
 
@@ -85,15 +120,15 @@ class FirstPage extends StatelessWidget {
                         ),
                       ),
                       OutlinedButton(
-                        onPressed: () => {},
+                        onPressed: () => signInFB(context),
                         style: OutlinedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(28)),
                           backgroundColor:
-                              const Color.fromRGBO(88 ,101 ,242,1),
+                              const Color.fromRGBO(66 ,103 ,178,1),
                           side: const BorderSide(
                               width: 1.5,
-                              color: Color.fromRGBO(88 ,101 ,242,1)),
+                              color: Color.fromRGBO(66 ,103 ,178,1)),
                           elevation: 3
                         ),
                         child: Padding(
@@ -103,12 +138,12 @@ class FirstPage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: const [
                               Icon(
-                                Icons.discord,
+                                Icons.facebook,
                                 size: 28,
                                 color: Colors.white,
                               ),
                               Text(
-                                "Continuar con Discord",
+                                "Continuar con Facebook",
                                 style: TextStyle(
                                     fontSize: 17, color: Colors.white),
                               ),

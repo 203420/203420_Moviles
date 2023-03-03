@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:new_app/api/facebook_signin_api.dart';
 import 'package:new_app/api/google_signin_api.dart';
+import 'package:new_app/api/user_class.dart';
 import 'package:new_app/pages/first.dart';
 
 class UserData extends StatelessWidget {
-  final dynamic user;
+  final User user;
 
   const UserData({Key? key, required this.user}) : super(key: key);
 
@@ -58,16 +61,20 @@ class UserData extends StatelessWidget {
                 child: Center(
                   child: SizedBox(
                     width: double.infinity,
-                    height: 200,
+                    height: 300,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          user.displayName!
+                          user.name
                         ),
-                        Text(
+                       Text(
                           user.email
                         ),
+                        Text(
+                          user.token
+                        ),
+                    
                         Padding(
                           padding: const EdgeInsets.only(top: 50),
                           child: SizedBox(
@@ -75,8 +82,10 @@ class UserData extends StatelessWidget {
                             height: 60,
                             child: OutlinedButton(
                               onPressed: () async {
-                                if (user is GoogleSignInAccount){
+                                if (user.type == 'GOOGLE'){
                                   await GoogleSignInApi.logout();
+                                }else if (user.type == "FB"){
+                                  await FacebookAuth.instance.logOut();
                                 }
                                 
                                 // ignore: use_build_context_synchronously
