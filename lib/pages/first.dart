@@ -1,12 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:new_app/api/google_signin_api.dart';
 import 'package:new_app/pages/login.dart';
 import 'package:new_app/pages/passw_recvover1.dart';
 import 'package:new_app/pages/register.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:new_app/pages/user_data.dart';
 
 class FirstPage extends StatelessWidget {
   const FirstPage({super.key});
+
+
+  Future <void> signIn(BuildContext context) async {
+    final user = await GoogleSignInApi.login();
+    if (user != null) {
+      print(user);
+      final GoogleSignInAuthentication googleAuth = await user.authentication;
+      print(googleAuth.idToken);
+      print(googleAuth.accessToken);
+      
+      // ignore: use_build_context_synchronously
+      Navigator.push(context, MaterialPageRoute(builder: (context) =>  UserData(user: user)));
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -34,31 +53,32 @@ class FirstPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       OutlinedButton(
-                        onPressed: () => {},
+                        onPressed: () => signIn(context),
                         style: OutlinedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(28)),
                           backgroundColor:
-                              const Color.fromARGB(255, 59, 89, 219),
+                              const Color.fromARGB(255, 249, 249, 249),
                           side: const BorderSide(
                               width: 1.5,
-                              color: Color.fromARGB(255, 59, 89, 219)),
+                              color: Color.fromARGB(255, 249, 249, 249)),
+                          elevation: 5
                         ),
                         child: Padding(
                           padding: const EdgeInsets.only(
                               top: 14, bottom: 14, left: 6, right: 30),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: const [
-                              ImageIcon(
-                                AssetImage("assets/images/google_icon.png"),
-                                size: 28,
-                                color: Colors.white,
-                              ),
-                              Text(
+                            children:  [
+                               Image.asset(
+                                'assets/images/google_icon_color.png',
+                                  height: 24,
+                                  width: 24,
+                                ),
+                              const Text(
                                 "Continuar con Google",
                                 style: TextStyle(
-                                    fontSize: 17, color: Colors.white),
+                                    fontSize: 17, color: Color.fromARGB(255, 84, 84, 84)),
                               ),
                             ],
                           ),
@@ -70,10 +90,11 @@ class FirstPage extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(28)),
                           backgroundColor:
-                              const Color.fromARGB(255, 51, 68, 143),
+                              const Color.fromRGBO(88 ,101 ,242,1),
                           side: const BorderSide(
                               width: 1.5,
-                              color: Color.fromARGB(255, 51, 68, 143)),
+                              color: Color.fromRGBO(88 ,101 ,242,1)),
+                          elevation: 3
                         ),
                         child: Padding(
                           padding: const EdgeInsets.only(
@@ -82,12 +103,12 @@ class FirstPage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: const [
                               Icon(
-                                Icons.facebook,
+                                Icons.discord,
                                 size: 28,
                                 color: Colors.white,
                               ),
                               Text(
-                                "Continuar con Facebook",
+                                "Continuar con Discord",
                                 style: TextStyle(
                                     fontSize: 17, color: Colors.white),
                               ),
@@ -107,6 +128,7 @@ class FirstPage extends StatelessWidget {
                           side: const BorderSide(
                               width: 2,
                               color: Color.fromARGB(255, 88, 88, 88)),
+                          elevation: 3
                         ),
                         child: Padding(
                           padding: const EdgeInsets.only(
@@ -196,5 +218,8 @@ class FirstPage extends StatelessWidget {
         ),
       ),
     );
+
   }
+
+  
 }

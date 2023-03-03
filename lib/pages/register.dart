@@ -1,9 +1,11 @@
 // ignore_for_file: library_private_types_in_public_api
-
+import 'dart:convert';
+import 'package:http/http.dart' as http; 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:new_app/pages/login.dart';
 
 class Register extends StatefulWidget {
@@ -17,6 +19,32 @@ class _RegisterState extends State<Register> {
   final formKey = GlobalKey<FormState>();
   bool acceptT = false;
   bool obsText = true;
+
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwdController = TextEditingController();
+
+  //final url = 'http://localhost:8000/auth/register';
+
+
+  void postData(BuildContext context) async {
+    try {
+        var url = Uri.http('192.168.100.12:8000', 'auth/register');
+        var response = await http.post(url, body: {'nombre': nameController.text, 'email': emailController.text, 'password': passwdController.text});
+        if (kDebugMode) {
+          print('Response status: ${response.statusCode}');
+        }
+        if (response.statusCode == 200) {
+          // ignore: use_build_context_synchronously
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const Login()));
+        }
+      } catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
+    }
+    
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,6 +129,7 @@ class _RegisterState extends State<Register> {
                                                 color: Colors.black)),
                                       )),
                                   TextFormField(
+                                    controller: nameController,
                                     decoration: InputDecoration(
                                       hintText: "Nombre completo",
                                       border: OutlineInputBorder(
@@ -136,6 +165,7 @@ class _RegisterState extends State<Register> {
                                                 color: Colors.black)),
                                       )),
                                   TextFormField(
+                                    controller: emailController,
                                     decoration: InputDecoration(
                                       hintText: "Dirección de correo",
                                       border: OutlineInputBorder(
@@ -171,6 +201,7 @@ class _RegisterState extends State<Register> {
                                                 color: Colors.black)),
                                       )),
                                   TextFormField(
+                                    controller: passwdController,
                                     decoration: InputDecoration(
                                       hintText: "Contraseña",
                                       border: OutlineInputBorder(
@@ -258,12 +289,8 @@ class _RegisterState extends State<Register> {
                                 height: 60,
                                 child: OutlinedButton(
                                   onPressed: () => {
-                                    if (formKey.currentState!.validate()){
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                        builder: (context) => const Login()),
-                                      ),
+                                    if (formKey.currentState!.validate() && acceptT ==true){
+                                      postData(context)
                                     }
                                   },
                                   style: OutlinedButton.styleFrom(

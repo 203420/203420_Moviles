@@ -1,8 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http; 
+import 'package:flutter/src/foundation/constants.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:new_app/pages/passw_recvover1.dart';
 import 'package:new_app/pages/register.dart';
+import 'package:new_app/pages/user_data.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -11,8 +16,45 @@ class Login extends StatefulWidget {
   State<Login> createState() => _LoginState();
 }
 
+class User {
+    String displayName;
+    String email;
+
+    User(this.displayName, this.email);
+  }
+
 class _LoginState extends State<Login> {
   bool obsText = true;
+  final TextEditingController eController = TextEditingController();
+  final TextEditingController pController = TextEditingController();
+
+  
+
+  void login(BuildContext context) async {
+    try {
+        var url = Uri.http('192.168.100.12:8000', 'auth/login');
+        var response = await http.post(url, body: {'email': eController.text, 'password': pController.text});
+        if (kDebugMode) {
+          print('Response status: ${response.statusCode}');
+        }
+        
+        if (response.statusCode == 200) {
+          final data = jsonDecode(response.body);
+          User user = User(data['nombre'], data['email']);
+
+          // ignore: use_build_context_synchronously
+          Navigator.push(context, MaterialPageRoute(builder: (context) =>  UserData(user: user)));
+        }
+      } catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
+        
+    }
+    
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -97,6 +139,7 @@ class _LoginState extends State<Login> {
                                             color: Colors.black)),
                                   )),
                               TextFormField(
+                                controller: eController,
                                 decoration: InputDecoration(
                                   hintText: "Dirección de correo",
                                   border: OutlineInputBorder(
@@ -124,6 +167,7 @@ class _LoginState extends State<Login> {
                                             color: Colors.black)),
                                   )),
                               TextFormField(
+                                controller: pController,
                                 decoration: InputDecoration(
                                   hintText: "Contraseña",
                                   border: OutlineInputBorder(
@@ -155,7 +199,9 @@ class _LoginState extends State<Login> {
                             width: double.infinity,
                             height: 60,
                             child: OutlinedButton(
-                              onPressed: () => {},
+                              onPressed: () => {
+                                login(context)
+                              },
                               style: OutlinedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(28)),
@@ -166,7 +212,7 @@ class _LoginState extends State<Login> {
                                       color:
                                           Color.fromRGBO(117, 167, 86, 1.000))),
                               child: const Text(
-                                "Crear cuenta",
+                                "Ingresar",
                                 style: TextStyle(
                                     fontSize: 19, color: Colors.white),
                               ),
